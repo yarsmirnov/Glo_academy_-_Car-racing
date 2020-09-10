@@ -8,6 +8,41 @@
 
 
 /*
+  Интерфейс
+*/
+
+.start {
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 2rem 0;
+  font-family: sans-serif;
+  font-weight: 700;
+  text-align: center;
+  color:#ffffff;
+  background-color: #000000;
+  cursor: pointer;
+}
+
+.score {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: royalblue;
+  text-align: center;
+  background-color: #000000;
+}
+
+
+/*
   Игровое поле
 */
 
@@ -33,9 +68,8 @@
 */
 
 .car {
+  z-index: 1;
   position: absolute;
-  left: 125px;
-  bottom: 10px;
   width: 50px;
   height: 100px;
   background-color: transparent;

@@ -34,6 +34,19 @@ const Setting = {
 // Работа с интерфейсом
 
 const startGame = function () {
+  gameArea.innerHTML = ``;
+  start.classList.add('hidden');
+  Setting.SCORE = 0;
+  Setting.START = true;
+
+  gameArea.appendChild(car);
+
+  car.style.left = `${gameArea.offsetWidth / 2 - car.offsetWidth / 2}px`;
+  car.style.top = `auto`;
+  car.style.bottom = `10px`;
+  Setting.X = car.offsetLeft;
+  Setting.Y = car.offsetTop;
+
   for (let i = 0; i < getQuantityOfElement(100); i++) {
     const line = document.createElement(`div`);
     line.classList.add(`line`);
@@ -51,16 +64,14 @@ const startGame = function () {
     gameArea.appendChild(enemy);
   };
 
-  start.classList.add('hidden');
-  Setting.START = true;
-  gameArea.appendChild(car);
-  Setting.X = car.offsetLeft;
-  Setting.Y = car.offsetTop;
   requestAnimationFrame(playGame);
 };
 
 const playGame = function () {
   if (Setting.START) {
+    Setting.SCORE += Setting.SPEED;
+    score.textContent = `Score: ${Setting.SCORE}`;
+
     moveRoad();
     moveEnemy();
 
@@ -76,8 +87,10 @@ const playGame = function () {
     if (keys.ArrowDown && Setting.Y < (gameArea.offsetHeight - car.offsetHeight)) {
       Setting.Y += Setting.SPEED;
     }
+
     car.style.left = `${Setting.X}px`;
     car.style.top = `${Setting.Y}px`;
+
     requestAnimationFrame(playGame);
   }
 };
@@ -96,7 +109,21 @@ const moveRoad = function () {
 
 const moveEnemy = function () {
   let enemies = document.querySelectorAll(`.enemy`);
+
   enemies.forEach(function (enemy) {
+    let carRect = car.getBoundingClientRect();
+    let enemyRect = enemy.getBoundingClientRect();
+
+    if (carRect.top <= enemyRect.bottom &&
+      carRect.right >= enemyRect.left &&
+      carRect.left <= enemyRect.right &&
+      carRect.bottom >= enemyRect.top) {
+      Setting.START = false;
+      console.warn(`crash`);
+      start.style.top = `${score.offsetHeight}px`;
+      start.classList.remove(`hidden`);
+    }
+
     enemy.y += Setting.SPEED / 2;
     enemy.style.top = `${enemy.y}px`;
 
